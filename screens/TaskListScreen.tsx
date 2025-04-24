@@ -72,6 +72,32 @@ export default function TaskListScreen() {
           contentContainerStyle={styles.taskList}
         />
       </View>
+
+      <View style={styles.bottomNavigation}>
+        <TouchableOpacity style={styles.navItem}>
+          <Ionicons name="document-text-outline" size={24} color="#666" />
+          <Text style={styles.navText}>Tasks</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.navItem}>
+          <Ionicons name="notifications-outline" size={24} color="#666" />
+          <Text style={styles.navText}>Notifications</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.fabButton}>
+          <Ionicons name="add" size={30} color="white" />
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.navItem}>
+          <Ionicons name="folder-outline" size={24} color="#666" />
+          <Text style={styles.navText}>History</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.navItem}>
+          <Ionicons name="person-outline" size={24} color="#666" />
+          <Text style={styles.navText}>Profile</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   )
 }
@@ -157,5 +183,33 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 12,
     fontWeight: "bold",
+  },
+  bottomNavigation: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    borderTopWidth: 1,
+    borderTopColor: "#E0E0E0",
+    paddingVertical: 8,
+    backgroundColor: "white",
+  },
+  navItem: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 5,
+  },
+  navText: {
+    fontSize: 12,
+    color: "#666",
+    marginTop: 2,
+  },
+  fabButton: {
+    backgroundColor: "#FF5722",
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 15,
   },
 })
