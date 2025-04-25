@@ -1,78 +1,193 @@
 "use client"
 
 import { useState } from "react"
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, FlatList } from "react-native"
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, FlatList, Image } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { Ionicons } from "@expo/vector-icons"
+import { useRouter } from "expo-router"
 
 interface Task {
   id: string
+  type: string
   title: string
-  tags: string[]
+  time?: string
+  price?: string
+  distance?: string
+  status?: string
+  match?: string
+  amount?: string
+  date?: string
+  image?: string
 }
 
 export default function TaskListScreen() {
+  const router = useRouter()
   const [searchQuery, setSearchQuery] = useState("")
-  const [tasks, setTasks] = useState<Task[]>([
+  const [selectedCategory, setSelectedCategory] = useState<string>("all")
+
+  const tasks: Task[] = [
     {
       id: "1",
-      title: "Security",
-      tags: ["route-16", "Ryuk_SQL"],
+      type: "security",
+      title: "Parking Security",
+      time: "12:00-15:00",
+      price: "$50/hr",
+      distance: "850 meter away",
+      date: "20/10/2020",
+      image: "https://cdn-icons-png.flaticon.com/512/2554/2554966.png",
     },
-  ])
-  const [selectedTag, setSelectedTag] = useState<string | null>("security")
+    {
+      id: "2",
+      type: "security",
+      title: "Stadium Security",
+      time: "16:00-19:00",
+      price: "180/hr",
+      distance: "450 meter away",
+      date: "20/10/2020",
+      image: "https://cdn-icons-png.flaticon.com/512/2554/2554966.png",
+    },
+    {
+      id: "3",
+      type: "translator",
+      title: "Translator",
+      time: "11:00-13:00",
+      price: "$90/hr",
+      distance: "1000 meter away",
+      date: "20/10/2020",
+      image: "https://cdn-icons-png.flaticon.com/512/3898/3898082.png",
+    },
+    {
+      id: "4",
+      type: "security",
+      title: "Stadium Security",
+      time: "10:00-18:00",
+      price: "150/hr",
+      distance: "650 meter away",
+      date: "20/10/2020",
+      image: "https://cdn-icons-png.flaticon.com/512/2554/2554966.png",
+    },
+    {
+      id: "5",
+      type: "security",
+      title: "Stadium Security",
+      time: "10:00-18:00",
+      price: "150/hr",
+      distance: "680 meter away",
+      date: "20/10/2020",
+      image: "https://cdn-icons-png.flaticon.com/512/2554/2554966.png",
+    },
+    {
+      id: "6",
+      type: "guide",
+      title: "Travel guide",
+      time: "10:00-16:00",
+      price: "$200/hr",
+      distance: "300 meter away",
+      date: "20/10/2020",
+      image: "https://cdn-icons-png.flaticon.com/512/2554/2554966.png",
+    },
+  ]
+
+  const categories = [
+    { id: "all", name: "All" },
+    { id: "guide", name: "guide" },
+    { id: "translator", name: "Translator" },
+    { id: "security", name: "Security" },
+    { id: "other", name: "Other" },
+  ]
 
   const filteredTasks = tasks.filter((task) => {
-    if (selectedTag && selectedTag.toLowerCase() !== "security") {
-      return task.tags.some((tag) => tag.toLowerCase().includes(selectedTag.toLowerCase()))
+    if (selectedCategory !== "all" && task.type !== selectedCategory) {
+      return false
     }
+
+    if (searchQuery) {
+      return task.title.toLowerCase().includes(searchQuery.toLowerCase())
+    }
+
     return true
   })
 
   const renderTaskItem = ({ item }: { item: Task }) => (
-    <View style={styles.taskItem}>
-      <Text style={styles.taskTitle}>{item.title}</Text>
-      <View style={styles.tagsContainer}>
-        {item.tags.map((tag, index) => (
-          <View key={index} style={[styles.tagChip, { backgroundColor: index === 0 ? "#FF69B4" : "#FF1493" }]}>
-            <Text style={styles.tagText}>{tag}</Text>
+      <TouchableOpacity style={styles.taskItem} onPress={() => router.push(`./task/${item.id}`)}>
+        <View style={styles.taskContent}>
+          <View style={styles.taskInfo}>
+            <Text style={styles.taskTitle}>{item.title}</Text>
+
+            <View style={styles.taskDetail}>
+              <Text style={styles.taskLabel}>time</Text>
+              <Text style={styles.taskValue}>{item.time}</Text>
+            </View>
+
+            <View style={styles.taskDetail}>
+              <Text style={styles.taskLabel}>price</Text>
+              <Text style={styles.taskValue}>{item.price}</Text>
+            </View>
+
+            <View style={styles.taskDetail}>
+              <Text style={styles.taskLabel}>distance</Text>
+              <Text style={styles.taskValue}>{item.distance}</Text>
+            </View>
           </View>
-        ))}
-      </View>
-    </View>
+
+          <View style={styles.taskImageContainer}>
+            <Image source={{ uri: item.image }} style={styles.taskImage} resizeMode="contain" />
+          </View>
+        </View>
+
+        <View style={styles.taskDate}>
+          <Text style={styles.dateText}>{item.date}</Text>
+        </View>
+      </TouchableOpacity>
   )
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Task List,</Text>
-        <TouchableOpacity style={styles.tagFilter}>
-          <Text style={styles.tagFilterText}>security</Text>
-        </TouchableOpacity>
-      </View>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>Tasks Lists</Text>
+        </View>
 
-      <View style={styles.searchContainer}>
-        <Ionicons name="search" size={20} color="#999" style={styles.searchIcon} />
-        <TextInput
-          style={styles.searchInput}
-          placeholder="search"
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-          placeholderTextColor="#999"
-        />
-      </View>
+        <View style={styles.searchContainer}>
+          <Ionicons name="search" size={20} color="#999" style={styles.searchIcon} />
+          <TextInput
+              style={styles.searchInput}
+              placeholder="search"
+              value={searchQuery}
+              onChangeText={setSearchQuery}
+              placeholderTextColor="#999"
+          />
+          <Ionicons name="chevron-forward" size={20} color="#999" />
+        </View>
 
-      <View style={styles.contentContainer}>
-        <Text style={styles.sectionTitle}>Post</Text>
+        <View style={styles.categoriesContainer}>
+          <FlatList
+              data={categories}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => (
+                  <TouchableOpacity
+                      style={[styles.categoryButton, selectedCategory === item.id && styles.categoryButtonActive]}
+                      onPress={() => setSelectedCategory(item.id)}
+                  >
+                    <Text
+                        style={[styles.categoryButtonText, selectedCategory === item.id && styles.categoryButtonTextActive]}
+                    >
+                      {item.name}
+                    </Text>
+                  </TouchableOpacity>
+              )}
+              contentContainerStyle={styles.categoriesList}
+          />
+        </View>
 
         <FlatList
-          data={filteredTasks}
-          renderItem={renderTaskItem}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.taskList}
+            data={filteredTasks}
+            renderItem={renderTaskItem}
+            keyExtractor={(item) => item.id}
+            contentContainerStyle={styles.taskList}
         />
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
   )
 }
 
@@ -92,16 +207,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
   },
-  tagFilter: {
-    backgroundColor: "#FF5722",
-    paddingHorizontal: 15,
-    paddingVertical: 5,
-    borderRadius: 20,
-  },
-  tagFilterText: {
-    color: "white",
-    fontWeight: "bold",
-  },
   searchContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -119,43 +224,81 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     fontSize: 16,
   },
-  contentContainer: {
-    flex: 1,
-    paddingHorizontal: 20,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    color: "#999",
+  categoriesContainer: {
     marginBottom: 10,
   },
+  categoriesList: {
+    paddingHorizontal: 20,
+  },
+  categoryButton: {
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+    borderRadius: 20,
+    marginRight: 10,
+    backgroundColor: "#F0F0F0",
+  },
+  categoryButtonActive: {
+    backgroundColor: "#FF5722",
+  },
+  categoryButtonText: {
+    color: "#666",
+  },
+  categoryButtonTextActive: {
+    color: "white",
+    fontWeight: "bold",
+  },
   taskList: {
-    paddingBottom: 20,
+    padding: 20,
+    paddingTop: 0,
   },
   taskItem: {
     backgroundColor: "#FFF8E1",
+    borderRadius: 12,
     padding: 15,
-    borderRadius: 8,
-    marginBottom: 10,
+    marginBottom: 15,
+  },
+  taskContent: {
+    flexDirection: "row",
+  },
+  taskInfo: {
+    flex: 1,
   },
   taskTitle: {
     fontSize: 16,
     fontWeight: "bold",
     marginBottom: 8,
   },
-  tagsContainer: {
+  taskDetail: {
     flexDirection: "row",
-    flexWrap: "wrap",
+    marginBottom: 4,
   },
-  tagChip: {
-    paddingHorizontal: 10,
-    paddingVertical: 3,
-    borderRadius: 15,
-    marginRight: 8,
-    marginBottom: 5,
-  },
-  tagText: {
-    color: "white",
+  taskLabel: {
+    width: 60,
     fontSize: 12,
-    fontWeight: "bold",
+    color: "#666",
+  },
+  taskValue: {
+    fontSize: 12,
+    fontWeight: "500",
+  },
+  taskImageContainer: {
+    marginTop:20,
+    width: 70,
+    height: 70,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  taskImage: {
+    width: 60,
+    height: 60,
+  },
+  taskDate: {
+    position: "absolute",
+    top: 15,
+    right: 15,
+  },
+  dateText: {
+    fontSize: 10,
+    color: "#999",
   },
 })

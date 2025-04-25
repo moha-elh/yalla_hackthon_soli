@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef } from "react"
-import { StyleSheet, Text, View, TouchableOpacity, TextInput } from "react-native"
+import {StyleSheet, Text, View, TouchableOpacity, TextInput, Image} from "react-native"
 import { useRouter } from "expo-router"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { Ionicons } from "@expo/vector-icons"
@@ -42,7 +42,10 @@ export default function EnterOTPScreen() {
       <View style={styles.content}>
         <View style={styles.logoContainer}>
           <View style={styles.logoBackground}>
-            <Text style={styles.logoText}>yalla</Text>
+            <Image
+                source={require('../assets/images/yalla v2.png')}
+                style={styles.logoImage}
+            />
           </View>
         </View>
 
@@ -171,4 +174,9 @@ const styles = StyleSheet.create({
     color: "green",
     fontWeight: "bold",
   },
+  logoImage: {
+    width: 60,
+    height: 60,
+    resizeMode: 'contain',
+  }
 })

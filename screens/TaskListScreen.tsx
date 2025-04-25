@@ -45,7 +45,7 @@ export default function TaskListScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Task List,</Text>
+        <Text style={styles.headerTitle}>Task List</Text>
         <TouchableOpacity style={styles.tagFilter}>
           <Text style={styles.tagFilterText}>security</Text>
         </TouchableOpacity>

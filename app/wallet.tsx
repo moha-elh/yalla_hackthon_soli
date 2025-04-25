@@ -69,64 +69,64 @@ export default function WalletScreen() {
   ]
 
   const renderTransaction = ({ item }: { item: Transaction }) => (
-      <View style={styles.transactionItem}>
-        <View style={[styles.iconContainer, { backgroundColor: item.iconColor }]}>
-          <Ionicons name={item.icon as any} size={20} color="white" />
-        </View>
-        <View style={styles.transactionInfo}>
-          <Text style={styles.transactionTitle}>{item.title}</Text>
-          <Text style={styles.transactionDate}>{item.date}</Text>
-          {item.match && <Text style={styles.transactionMatch}>{item.match}</Text>}
-          {item.location && <Text style={styles.transactionLocation}>{item.location}</Text>}
-        </View>
-        <Text style={styles.transactionAmount}>{item.amount}</Text>
+    <View style={styles.transactionItem}>
+      <View style={[styles.iconContainer, { backgroundColor: item.iconColor }]}>
+        <Ionicons name={item.icon as any} size={20} color="white" />
       </View>
+      <View style={styles.transactionInfo}>
+        <Text style={styles.transactionTitle}>{item.title}</Text>
+        <Text style={styles.transactionDate}>{item.date}</Text>
+        {item.match && <Text style={styles.transactionMatch}>{item.match}</Text>}
+        {item.location && <Text style={styles.transactionLocation}>{item.location}</Text>}
+      </View>
+      <Text style={styles.transactionAmount}>{item.amount}</Text>
+    </View>
   )
 
   return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.headerTitle}>Wallet</Text>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>Wallet</Text>
+      </View>
+
+      <View style={styles.balanceSection}>
+        <Text style={styles.balanceLabel}>Your Balance</Text>
+        <Text style={styles.balanceAmount}>670.00 dh</Text>
+
+        <View style={styles.actionsContainer}>
+          <TouchableOpacity style={styles.actionButton} onPress={() => router.push("/wallet-points")}>
+            <View style={[styles.actionIcon, { backgroundColor: "#2196F3" }]}>
+              <Ionicons name="trophy" size={24} color="white" />
+            </View>
+            <Text style={styles.actionText}>Points</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.actionButton} onPress={() => router.push("/wallet-leaderboard")}>
+            <View style={[styles.actionIcon, { backgroundColor: "#FF5722" }]}>
+              <Ionicons name="people" size={24} color="white" />
+            </View>
+            <Text style={styles.actionText}>leaderboard</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.actionButton} onPress={() => router.push("/wallet-more")}>
+            <View style={[styles.actionIcon, { backgroundColor: "#4CAF50" }]}>
+              <Ionicons name="grid" size={24} color="white" />
+            </View>
+            <Text style={styles.actionText}>More</Text>
+          </TouchableOpacity>
         </View>
+      </View>
 
-        <View style={styles.balanceSection}>
-          <Text style={styles.balanceLabel}>Your Balance</Text>
-          <Text style={styles.balanceAmount}>670.00 dh</Text>
-
-          <View style={styles.actionsContainer}>
-            <TouchableOpacity style={styles.actionButton}>
-              <View style={[styles.actionIcon, { backgroundColor: "#2196F3" }]}>
-                <Ionicons name="trophy" size={24} color="white" />
-              </View>
-              <Text style={styles.actionText}>Points</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.actionButton}>
-              <View style={[styles.actionIcon, { backgroundColor: "#FF5722" }]}>
-                <Ionicons name="people" size={24} color="white" />
-              </View>
-              <Text style={styles.actionText}>leaderboard</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.actionButton}>
-              <View style={[styles.actionIcon, { backgroundColor: "#4CAF50" }]}>
-                <Ionicons name="grid" size={24} color="white" />
-              </View>
-              <Text style={styles.actionText}>More</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        <View style={styles.transactionsContainer}>
-          <Text style={styles.sectionTitle}>History</Text>
-          <FlatList
-              data={transactions}
-              renderItem={renderTransaction}
-              keyExtractor={(item) => item.id}
-              contentContainerStyle={styles.transactionsList}
-          />
-        </View>
-      </SafeAreaView>
+      <View style={styles.transactionsContainer}>
+        <Text style={styles.sectionTitle}>History</Text>
+        <FlatList
+          data={transactions}
+          renderItem={renderTransaction}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={styles.transactionsList}
+        />
+      </View>
+    </SafeAreaView>
   )
 }
 

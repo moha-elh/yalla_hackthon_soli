@@ -69,7 +69,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="history"
         options={{
-          title: "History",
+          title: "Wallet",
           tabBarIcon: ({ color, size }) => <Ionicons name="folder-outline" color={color} size={size} />,
         }}
       />

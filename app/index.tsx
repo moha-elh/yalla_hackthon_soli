@@ -8,20 +8,18 @@ export default function WelcomeScreen() {
   const router = useRouter()
 
   return (
-    <ImageBackground
-      source={{
-        uri: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-xjpziLywWzA0Tvjf0uZfajiituXSl4.png",
-      }}
-      style={styles.backgroundImage}
-    >
-      <LinearGradient colors={["transparent", "rgba(0,0,0,0.7)"]} style={styles.gradient}>
+      <ImageBackground
+          source={require('../assets/images/ChatGPT_Image_24_avr._2025,_14_29_40[1].png')}
+          style={styles.backgroundImage}
+      >
+      <LinearGradient colors={["transparent", "rgba(0,0,0,0.3)"]} style={styles.gradient}>
         <View style={styles.container}>
           <View style={styles.textContainer}>
             <Text style={styles.title}>
-              Fall in Love with{"\n"}Coffee in Blissful{"\n"}Delight!
+              YALLA!{"\n"}Empower Events.{"\n"}Elevate Experiences.{"\n"}
             </Text>
             <Text style={styles.subtitle}>
-              Welcome to our cozy coffee corner,{"\n"}where every cup is delightful for you.
+              Join the heartbeat of global events{"\n"}where every task, shift and smile makes {"\n"}history.
             </Text>
           </View>
 

@@ -1,25 +1,47 @@
 "use client"
 
 import { useState } from "react"
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image, ScrollView } from "react-native"
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image, ScrollView, Alert } from "react-native"
 import { useRouter } from "expo-router"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { Ionicons } from "@expo/vector-icons"
+import { register } from "@/firebase/authFunctions"
 
 export default function SignUpScreen() {
   const router = useRouter()
   const [name, setName] = useState("")
-  const [phoneNumber, setPhoneNumber] = useState("")
+  const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [cpassword, setCPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [agreeToTerms, setAgreeToTerms] = useState(false)
+
+  const handleRegister = async () => {
+    try {
+      if (cpassword != password) {
+        Alert.alert("Passwords don't match");
+        return;
+      }
+      await register(email, password);
+      router.push("/sign-in"); // Navigate to main app or wherever
+    } catch (err) {
+      if (err instanceof Error) {
+        Alert.alert("Registration Failed", err.message);
+      } else {
+        Alert.alert("Registration Failed", "An unknown error occurred.");
+      }
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.logoContainer}>
           <View style={styles.logoBackground}>
-            <Text style={styles.logoText}>yalla</Text>
+            <Image
+                source={require('../assets/images/yalla v2.png')}
+                style={styles.logoImage}
+            />
           </View>
         </View>
 
@@ -39,10 +61,8 @@ export default function SignUpScreen() {
 
           <TouchableOpacity style={styles.socialButton}>
             <Image
-              source={{
-                uri: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png",
-              }}
-              style={styles.socialIcon}
+                source={require('../assets/images/7123025_logo_google_g_icon.png')}
+                style={styles.socialIcon}
             />
             <Text style={styles.socialButtonText}>Google</Text>
           </TouchableOpacity>
@@ -56,7 +76,7 @@ export default function SignUpScreen() {
 
         <TextInput
           style={styles.input}
-          placeholder="Name"
+          placeholder="Fullname"
           value={name}
           onChangeText={setName}
           placeholderTextColor="#999"
@@ -64,10 +84,9 @@ export default function SignUpScreen() {
 
         <TextInput
           style={styles.input}
-          placeholder="Phone Number"
-          value={phoneNumber}
-          onChangeText={setPhoneNumber}
-          keyboardType="phone-pad"
+          placeholder="Email"
+          value={email}
+          onChangeText={setEmail}
           placeholderTextColor="#999"
         />
 
@@ -81,7 +100,21 @@ export default function SignUpScreen() {
             placeholderTextColor="#999"
           />
           <TouchableOpacity style={styles.eyeIcon} onPress={() => setShowPassword(!showPassword)}>
-            <Ionicons name={showPassword ? "eye-off-outline" : "eye-outline"} size={24} color="#FF5722" />
+            <Ionicons name={!showPassword ? "eye-off-outline" : "eye-outline"} size={24} color="#FF5722" />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={styles.passwordInput}
+            placeholder="Confirm Password"
+            value={cpassword}
+            onChangeText={setCPassword}
+            secureTextEntry={!showPassword}
+            placeholderTextColor="#999"
+          />
+          <TouchableOpacity style={styles.eyeIcon} onPress={() => setShowPassword(!showPassword)}>
+            <Ionicons name={!showPassword ? "eye-off-outline" : "eye-outline"} size={24} color="#FF5722" />
           </TouchableOpacity>
         </View>
 
@@ -95,7 +128,7 @@ export default function SignUpScreen() {
           </Text>
         </View>
 
-        <TouchableOpacity style={styles.createButton} onPress={() => router.push("/(tabs)")}>
+        <TouchableOpacity style={styles.createButton} onPress={handleRegister}>
           <Text style={styles.createButtonText}>Creat Account</Text>
         </TouchableOpacity>
 
@@ -261,4 +294,9 @@ const styles = StyleSheet.create({
     color: "green",
     fontWeight: "bold",
   },
+  logoImage: {
+    width: 60,
+    height: 60,
+    resizeMode: 'contain',
+  }
 })
